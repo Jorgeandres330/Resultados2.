@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Resultados</title>
+    <style>
+        /* Estilo general */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #d4fc79, #96e6a1); /* Degradado verde claro */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            color: #333333;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+            padding: 40px;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333333;
+            font-weight: bold;
+        }
+
+        p {
+            font-size: 14px;
+            margin-bottom: 30px;
+            color: #666666;
+        }
+
+        input {
+            padding: 12px;
+            margin: 10px 0;
+            width: 100%;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            outline: none;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333333;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        input::placeholder {
+            color: #888;
+        }
+
+        button {
+            padding: 12px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            background: #b2e6a1; /* Verde claro */
+            color: #333333;
+            transition: background 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background: #a8df94; /* Verde un poco más oscuro al hacer hover */
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Consulta de Resultados</h2>
+        <p>Ingrese el usuario y documento o pin del niño para verificar si ganó:</p>
+        <input type="text" id="userInput" placeholder="Usuario">
+        <input type="text" id="pinInput" placeholder="Documento o Pin">
+        <button onclick="checkResult()">Consultar</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const scriptURL = "https://script.google.com/macros/s/AKfycbx08yAcF218dqxxDwwt71R0yHhxXgDhDi2VdEQ7p7fyOBsvF_7DR8RjO9BBreeVwRkq/exec";  // Reemplaza con el URL de la aplicación web de Google Apps Script
+
+        function checkResult() {
+            const usuario = document.getElementById("userInput").value;
+            const pin = document.getElementById("pinInput").value;
+            const resultElement = document.getElementById("result");
+
+            // Hacer la solicitud GET al script de Google Apps con ambos parámetros
+            fetch(`${scriptURL}?usuario=${usuario}&documento=${pin}`)
+                .then(response => response.json())
+                .then(data => {
+                    resultElement.textContent = `Resultado: ${data.resultado}`;
+                })
+                .catch(error => {
+                    resultElement.textContent = "Ocurrió un error en la consulta.";
+                    console.error("Error:", error);
+                });
+        }
+    </script>
+</body>
+</html>
+
